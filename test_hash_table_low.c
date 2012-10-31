@@ -1,52 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <check.h>
-#include "hash_table.h"
 #include "hash_table_low.h"
 #include "linked_list.h"
 
-hashTable hTable;
-
-void create_a_table() {
-	hTable = createTable();
-}
+#define tableSize 100
+linked_list* hash_table[tableSize] = {NULL};
 
 void insert_a_pair() {
-	addPair("string", 25, hTable);
+	insertPair("string", 25, hash_table, tableSize);
 }
 
 void insert_2nd_pair() {
-	addPair("string", 37, hTable);
+	insertPair("string", 37, hash_table, tableSize);
+}
+
+void insert_3rd_pair() {
+	insertPair("different_string", 19, hash_table, tableSize);
 }
 
 void remove_a_pair() {
-	deletePair("string", hTable);
+	removePair("string", hash_table, tableSize);
 }
 
-START_TEST(test_create) {
-	//creates a hash table and tests its
-	//initial parameters
-	
-	create_a_table();
-	
-	fail_unless(hTable.table != NULL, "Problem creating a hash table");
-	fail_unless(hTable.tableSize == 10, "Problem with the size of table");
-	fail_unless(hTable.loadFactor == 0, "Problem with the load factor of table");
-	fail_unless(hTable.maxLoad == 0.75, "Problem with the max load of table");
-	fail_unless(hTable.minLoad == 0.25, "Problem with the min load of table");
-	
-}
-END_TEST
-
-START_TEST(test_add) {
+START_TEST(test_insert) {
 	//2 pairs are inserted into the hash table
 	//with the same key parts(just to make sure they are in the same list) 
 	//but different value parts. Then its tested whether they are property inserted.	
 	
-	create_a_table();
-
 	insert_a_pair();
-	linked_list* head = (linked_list *) hTable.table[f("string", hTable.tableSize)];
+	linked_list* head = (linked_list *)hash_table[f("string", tableSize)];
 	fail_unless(head != NULL, "Bucket is empty");
 	
 	char* tmp_key = (head->data)->key;
@@ -67,15 +50,24 @@ START_TEST(test_remove) {
 	//then one pair is removed. Its tested whether the pair
 	//is removed successfully and the second pair is at the head
 	//of the corresponding list.
-	
-	create_a_table();
 
 	insert_a_pair();
 	insert_2nd_pair();
 	remove_a_pair();
 	
-	linked_list* head = (linked_list *) hTable.table[f("string", hTable.tableSize)];
+	linked_list* head = (linked_list *)hash_table[f("string", tableSize)];
 	fail_unless(head == NULL, "Bucket is not empty");
+}
+END_TEST
+
+START_TEST(test_get) {
+	//a pair is inserted into the table and then
+	//retrieved.
+
+	insert_3rd_pair();
+
+	keyValue *tmp = getPair("different_string", hash_table, tableSize);
+	fail_unless(strcmp(tmp->key, "different_string") == 0 && tmp->value == 19, "Problem with getting the pair");
 }
 END_TEST
 
@@ -83,9 +75,9 @@ Suite* hash_table_suite(void) {
 	Suite *s = suite_create("Hash_Table");
 	
 	TCase *ht_case = tcase_create("HT_case");
-	tcase_add_test(ht_case, test_create);
-	tcase_add_test(ht_case, test_add);
+	tcase_add_test(ht_case, test_insert);
 	tcase_add_test(ht_case, test_remove);
+	tcase_add_test(ht_case, test_get);
 	suite_add_tcase(s, ht_case);
 
 	return s;
