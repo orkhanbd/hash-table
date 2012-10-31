@@ -28,10 +28,10 @@ void insert_many() {
 	addPair("b", 25, &hTable);
 	addPair("c", 25, &hTable);
 	addPair("d", 25, &hTable);
-	//addPair("e", 25, &hTable);
-	//addPair("f", 25, &hTable);
-	//addPair("g", 25, &hTable);
-	//addPair("h", 25, &hTable);
+	addPair("e", 25, &hTable);
+	addPair("f", 25, &hTable);
+	addPair("g", 25, &hTable);
+	addPair("h", 25, &hTable);
 }
 
 START_TEST(test_create) {
@@ -101,7 +101,7 @@ START_TEST(test_resize) {
 
 	int i;
 	for(i=0; i < hTable.tableSize; i++) {
-		printf("%d\n", hTable.table[i]);
+		printf("%d\n", (int) hTable.table[i]);
 	}
 	
 	fail_unless(hTable.tableSize != 5, "not resized");

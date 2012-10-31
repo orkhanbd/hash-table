@@ -22,7 +22,7 @@ void insert_3rd_pair() {
 void insert_many() {
 	insertPair("a", 25, hash_table, tableSize, 0);
 	insertPair("b", 25, hash_table, tableSize, 0);
-	//insertPair("c", 25, hash_table, tableSize, 0);
+	insertPair("c", 25, hash_table, tableSize, 0);
 	//insertPair("d", 35, hash_table, tableSize, 0);
 	//insertPair("e", 25, hash_table, tableSize, 0);
 	//insertPair("f", 25, hash_table, tableSize, 0);
@@ -85,13 +85,12 @@ END_TEST
 START_TEST(test_insert_many) {
 	//a pair is inserted into the table and then
 	//retrieved.
-	printf("a -> %d\n", f("a", 10));
-
+	
 	insert_many();
 
 	int i;
 	for(i=0; i < tableSize; i++) {
-		printf("%d\n", hash_table[i]);
+		printf("%d\n", (int) hash_table[i]);
 	}
 
 }

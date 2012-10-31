@@ -95,7 +95,7 @@ linked_list** halveSize(linked_list** table, int tableSize, double loadFactor) {
 int f(char* key, unsigned tableSize){
 	int hashVal = 0;
 	int x;
-	for (x = 0; x < sizeof(key); ++x){
+	for (x = 0; key[x] != 0; ++x){
 		hashVal ^= (hashVal << 5) +
 		(hashVal >> 2) +
 		key[x];

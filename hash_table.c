@@ -7,7 +7,7 @@
 hashTable createTable() {
 	hashTable hTable;
 
-	hTable.tableSize = 10;
+	hTable.tableSize = 5;
 	hTable.loadFactor = 0;
 	hTable.maxLoad = 0.75;
 	hTable.minLoad = 0.25;
@@ -23,6 +23,7 @@ void addPair(char* key, int value, hashTable* hTable) {
 	if(hTable->loadFactor > hTable->maxLoad) {
 		hTable->table = doubleSize(hTable->table, hTable->tableSize, hTable->loadFactor);
 		hTable->loadFactor = hTable->loadFactor / 2;
+		hTable->tableSize = hTable->tableSize * 2;
 	}
 }
 
@@ -32,5 +33,6 @@ void deletePair(char* key, hashTable* hTable) {
 	if(hTable->loadFactor < hTable->minLoad && hTable->tableSize > 1) {
 		hTable->table = halveSize(hTable->table, hTable->tableSize, hTable->loadFactor);
 		hTable->loadFactor = hTable->loadFactor * 2;
+		hTable->tableSize = hTable->tableSize / 2;
 	}
 }
