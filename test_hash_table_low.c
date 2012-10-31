@@ -4,23 +4,34 @@
 #include "hash_table_low.h"
 #include "linked_list.h"
 
-#define tableSize 100
+#define tableSize 10
 linked_list* hash_table[tableSize] = {NULL};
 
 void insert_a_pair() {
-	insertPair("string", 25, hash_table, tableSize);
+	insertPair("string", 25, hash_table, tableSize, 0);
 }
 
 void insert_2nd_pair() {
-	insertPair("string", 37, hash_table, tableSize);
+	insertPair("string", 37, hash_table, tableSize, 0);
 }
 
 void insert_3rd_pair() {
-	insertPair("different_string", 19, hash_table, tableSize);
+	insertPair("different_string", 19, hash_table, tableSize, 0);
+}
+
+void insert_many() {
+	insertPair("a", 25, hash_table, tableSize, 0);
+	insertPair("b", 25, hash_table, tableSize, 0);
+	//insertPair("c", 25, hash_table, tableSize, 0);
+	//insertPair("d", 35, hash_table, tableSize, 0);
+	//insertPair("e", 25, hash_table, tableSize, 0);
+	//insertPair("f", 25, hash_table, tableSize, 0);
+	//insertPair("g", 25, hash_table, tableSize, 0);
+	//insertPair("h", 25, hash_table, tableSize, 0);
 }
 
 void remove_a_pair() {
-	removePair("string", hash_table, tableSize);
+	removePair("string", hash_table, tableSize, 0);
 }
 
 START_TEST(test_insert) {
@@ -71,6 +82,21 @@ START_TEST(test_get) {
 }
 END_TEST
 
+START_TEST(test_insert_many) {
+	//a pair is inserted into the table and then
+	//retrieved.
+	printf("a -> %d\n", f("a", 10));
+
+	insert_many();
+
+	int i;
+	for(i=0; i < tableSize; i++) {
+		printf("%d\n", hash_table[i]);
+	}
+
+}
+END_TEST
+
 Suite* hash_table_suite(void) {
 	Suite *s = suite_create("Hash_Table");
 	
@@ -78,6 +104,7 @@ Suite* hash_table_suite(void) {
 	tcase_add_test(ht_case, test_insert);
 	tcase_add_test(ht_case, test_remove);
 	tcase_add_test(ht_case, test_get);
+	tcase_add_test(ht_case, test_insert_many);
 	suite_add_tcase(s, ht_case);
 
 	return s;

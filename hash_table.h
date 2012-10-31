@@ -12,7 +12,7 @@ typedef struct hashTable {
 hashTable createTable();
 
 // this functon modifies the table. it inserts the key-value pair to the table
-void addPair(char* key, int value, hashTable hTable);
+void addPair(char* key, int value, hashTable* hTable);
 
 // this function modifies the table. it removes the key-value pair from the table corresponding to the'key'
-void deletePair(char *key, hashTable hTable);
+void deletePair(char *key, hashTable* hTable);

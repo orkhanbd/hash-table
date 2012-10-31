@@ -16,7 +16,7 @@ double insertPair(char* key, int value, linked_list** table, int tableSize, doub
 	tmp = find(key, table[hash]);
 
 	if(tmp == NULL){
-		if(table[hash] != NULL)
+		if(table[hash] != 0)
 			add(data, table[hash]);
 		else
 			table[hash] = initiate(data);

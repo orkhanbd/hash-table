@@ -12,15 +12,26 @@ void create_a_table() {
 }
 
 void insert_a_pair() {
-	addPair("string", 25, hTable);
+	addPair("string", 25, &hTable);
 }
 
 void insert_2nd_pair() {
-	addPair("string", 37, hTable);
+	addPair("string", 37, &hTable);
 }
 
 void remove_a_pair() {
-	deletePair("string", hTable);
+	deletePair("string", &hTable);
+}
+
+void insert_many() {
+	addPair("a", 25, &hTable);
+	addPair("b", 25, &hTable);
+	addPair("c", 25, &hTable);
+	addPair("d", 25, &hTable);
+	//addPair("e", 25, &hTable);
+	//addPair("f", 25, &hTable);
+	//addPair("g", 25, &hTable);
+	//addPair("h", 25, &hTable);
 }
 
 START_TEST(test_create) {
@@ -30,7 +41,7 @@ START_TEST(test_create) {
 	create_a_table();
 	
 	fail_unless(hTable.table != NULL, "Problem creating a hash table");
-	fail_unless(hTable.tableSize == 10, "Problem with the size of table");
+	fail_unless(hTable.tableSize == 5, "Problem with the size of table");
 	fail_unless(hTable.loadFactor == 0, "Problem with the load factor of table");
 	fail_unless(hTable.maxLoad == 0.75, "Problem with the max load of table");
 	fail_unless(hTable.minLoad == 0.25, "Problem with the min load of table");
@@ -79,13 +90,32 @@ START_TEST(test_remove) {
 }
 END_TEST
 
+START_TEST(test_resize) {
+	//
+	
+	create_a_table();
+
+	insert_many();
+	
+	printf("load factor -> %f\n", hTable.loadFactor);
+
+	int i;
+	for(i=0; i < hTable.tableSize; i++) {
+		printf("%d\n", hTable.table[i]);
+	}
+	
+	fail_unless(hTable.tableSize != 5, "not resized");
+}
+END_TEST
+
 Suite* hash_table_suite(void) {
 	Suite *s = suite_create("Hash_Table");
 	
 	TCase *ht_case = tcase_create("HT_case");
 	tcase_add_test(ht_case, test_create);
 	tcase_add_test(ht_case, test_add);
-	tcase_add_test(ht_case, test_remove);
+	//tcase_add_test(ht_case, test_remove);
+	tcase_add_test(ht_case, test_resize);
 	suite_add_tcase(s, ht_case);
 
 	return s;
